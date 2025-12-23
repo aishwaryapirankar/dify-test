@@ -1,15 +1,16 @@
 openapi: 3.0.0
 info:
-  title: Hello Plugin
+  title: MongoDB Dify Integration
   version: "1.0.0"
-  description: A simple test plugin for Dify to greet users.
+  description: Plugin to manage MongoDB workflows including running queries, inserts, and updates.
 
 servers:
-  - url: http://localhost:3333
+  - url: https://dify-test-production.up.railway.app
+
 paths:
-  /dify-plugin/hello:
+  /db/query:
     post:
-      summary: Greet the user
+      summary: Query MongoDB documents
       requestBody:
         required: true
         content:
@@ -17,13 +18,75 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
-                  example: Aishwarya
+                collection: { type: string }
+                filter: { type: object }
+                limit: { type: integer }
+                sort: { type: object }
       responses:
         "200":
-          description: Greeting response
-          content:
-            application/json:
-              schema:
-                type: object
+          description: List of documents
+
+  /db/insert:
+    post:
+      summary: Insert a new document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collection: { type: string }
+                data: { type: object }
+      responses:
+        "200":
+          description: ID of inserted document
+
+  /db/update:
+    post:
+      summary: Update documents with validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collection: { type: string }
+                filter: { type: object }
+                update: { type: object }
+      responses:
+        "200":
+          description: Update counts or rejection reason
+
+  /db/delete:
+    post:
+      summary: Delete a document OR Cancel an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collection: { type: string }
+                filter: { type: object }
+      responses:
+        "200":
+          description: Count of deleted documents
+
+  /db/aggregate:
+    post:
+      summary: Run form-based workflow with aggregation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                collection: { type: string }
+                pipeline: { type: array, items: { type: object } }
+      responses:
+        "200":
+          description: Insert and query results
