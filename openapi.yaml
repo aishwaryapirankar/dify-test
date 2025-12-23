@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+title: Hello Plugin
+version: "1.0.0"
+description: A simple test plugin for Dify to greet users.
+
+servers:
+  - url: http://localhost:3333
+paths:
+  /dify-plugin/hello:
+    post:
+      summary: Greet the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Aishwarya
+      responses:
+        "200":
+          description: Greeting response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                  type: string
