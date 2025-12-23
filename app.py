@@ -112,4 +112,6 @@ def method_not_allowed(e):
     }), 405
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3333)
+    # This part only runs if you type 'python app.py' manually
+    port = int(os.environ.get("PORT", 3333))
+    app.run(host="0.0.0.0", port=port)
