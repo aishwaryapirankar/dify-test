@@ -1,4 +1,43 @@
-MongoDB Dify Integration BackendThis repository contains a Flask-based API designed to act as a bridge between Dify.ai and MongoDB. It allows an AI Agent to perform precise CRUD operations, run complex aggregations, and enforce business logic guardrails for various operational use cases.🚀 Features & Evaluation Use-CasesThe backend is pre-configured to handle seven core evaluation scenarios:Real-Time Product Lookup: Execute find() queries to check inventory levels.Lead Capture: Store marketing leads with automated phone format validation (+ prefix requirement).Order Management: Update delivery statuses and perform safe deletions using specific identifiers.Customer Segmentation: Run multi-stage aggregation pipelines for high-value customer filtering.Chat Memory Retrieval: Fetch sorted conversation logs with pagination support.Form-Based Workflow: Handle insurance request submissions with reliability.Status Guardrails: Prevent updates on tickets that are already in a "Closed" state.🛠️ Tech StackLanguage: Python 3.13Framework: FlaskDatabase: MongoDB Atlas (using pymongo)Deployment: Railway (configured for 0.0.0.0 binding)AI Orchestration: Dify.ai (Agentic Workflow)⚙️ ConfigurationEnvironment VariablesCreate a .env file or set these in your Railway dashboard:Code snippetDB_USERNAME=your_mongodb_username
-DB_PASSWORD=your_mongodb_password
-PORT=8080
-OpenAPI SpecificationThe Dify Agent requires the openapi.yaml provided in this repo to understand how to call the endpoints. Ensure the servers.url in the YAML matches your Railway deployment URL.📖 API EndpointsEndpointMethodPurpose/db/queryPOSTGeneral find queries with filter, sort, and limit./db/insertPOSTInsert documents with phone format validation for leads./db/updatePOSTUpdate documents with "Closed" status protection for tickets./db/deletePOSTSafe deletion of single documents./db/aggregatePOSTExecute complex MongoDB aggregation pipelines.
+# MongoDB Dify Integration Backend
+
+This repository provides a Flask-based API bridge to connect **Dify.ai** with a **MongoDB** backend. It is designed to handle precise database operations while enforcing business logic guardrails directly at the API level.
+
+## Evaluation Use-Cases & Features
+
+The system is configured to support seven core evaluation scenarios:
+
+1.  **Real-Time Product Lookup**: Execute queries to verify inventory and SKU details.
+2.  **Lead Capture Storage**: Store marketing leads with automated phone format validation.
+3.  **Order Management**: Update delivery status or perform safe deletions using filters.
+4.  **Customer Segmentation**: Execute multi-stage aggregation pipelines for high-value customer analysis.
+5.  **Chat Memory Retrieval**: Fetch sorted conversation history with specific limits and timestamp sorting.
+6.  **Form-Based Workflow**: Reliable submission and retrieval of insurance request forms.
+7.  **Status-Based Protection**: Logic-level protection that blocks updates to tickets already marked as "Closed".
+
+## Tech Stack
+
+* **Runtime**: Python 3.9
+* **Web Framework**: Flask
+* **Database**: MongoDB Atlas (via `pymongo`)
+* **Infrastructure**: Railway (configured for `0.0.0.0` binding)
+* **AI Orchestrator**: Dify.ai (Agentic Workflow)
+
+## Setup & Configuration
+
+### 1. Environment Variables
+Set the following variables in your Railway dashboard or `.env` file:
+* `DB_USERNAME`: Your MongoDB Atlas username.
+* `DB_PASSWORD`: Your MongoDB Atlas password.
+
+### 2. Dify OpenAPI YAML
+Ensure the `servers.url` in your Dify tool configuration matches your Railway public URL. Use the provided `openapi.yaml` to register the `POST` endpoints.
+
+## API Documentation
+
+| Route | Method | Description |
+| :--- | :--- | :--- |
+| `/db/query` | `POST` | General search with `filter`, `sort`, and `limit`. |
+| `/db/insert` | `POST` | Document insertion, includes `leads` phone validation. |
+| `/db/update` | `POST` | Update documents, blocks updates for "Closed" tickets. |
+| `/db/delete` | `POST` | Deletes a single document based on a filter. |
+| `/db/aggregate` | `POST` | Runs a MongoDB aggregation pipeline array. |
