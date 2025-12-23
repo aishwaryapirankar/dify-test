@@ -103,5 +103,15 @@ def aggregate_query():
     results = list(collection.aggregate(pipeline))
     return jsonify(parse_json(results))
 
+# Error handler to convert 405 Method Not Allowed into a JSON response
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return jsonify({
+        "error": "Method Not Allowed",
+        "message": "This endpoint requires a POST request. Check your Postman/Dify settings."
+    }), 405
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3333)
+    port = int(os.environ.get("PORT", 3333))
+    print(f"Server starting on port {port}...")
+    app.run(host="0.0.0.0", port=port)
